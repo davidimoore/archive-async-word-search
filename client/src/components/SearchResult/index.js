@@ -1,20 +1,69 @@
-import React from 'react';
+import React, { Component } from 'react';
 import "./SearchResult.css"
 
-export default function SearchResult() {
-  const result =
-    {
-      word: 'hat',
-      definition: 'a shaped covering for the head worn for warmth, as a fashion item, or as part of a uniform',
-      etymoloygies: [
-        "Old English hætt, of Germanic origin; related to Old Norse hǫttr ‘hood’, also to hood"
-      ]
-    };
+export default class SearchResult extends Component {
+  renderOfficialResults() {
+    const { requestStatus } = this.props.officialDictionarySearch;
+    if (requestStatus === 'RECEIVED') {
+      const { definitions, etymologies } = this.props.officialDictionarySearch.data;
+      return (
+        <React.Fragment>
+          <div className={ `Result-Section` }>
+            <div className={ `title` }>
+              <h3>
+                Oxford Definitions
+              </h3>
+            </div>
+            <div className={ `Result` }>
+              { definitions && definitions.map((definition, index) => <span
+                key={ `definition-${index}` }>{ definition }</span>) }
+            </div>
+          </div>
+          <div className={ `Result-Section` }>
+            <div className={ `title` }>
+              <h3>
+                Oxford Etymologies
+              </h3>
+            </div>
+            <div className={ `Result` }>
+              { etymologies && etymologies.map((etymology, index) => <span
+                key={ `etymology-${index}` }>{ etymology }</span>) }
+            </div>
+          </div>
+        </React.Fragment>
+      )
+    } else {
+      return null
+    }
+  }
 
-  const { word, definition, etymoloygies } = result;
+  renderUrbanDictionaryResults() {
+    const { requestStatus } = this.props.urbanDictionarySearch;
+    if (requestStatus === 'RECEIVED') {
+      const { definitions } = this.props.urbanDictionarySearch.data;
+      return (
+        <React.Fragment>
+          <div className={ `Result-Section` }>
+            <div className={ `title` }>
+              <h3>
+                Urban Dictionary Definitions
+              </h3>
+            </div>
+            <div className={ `Result` }>
+              { definitions && definitions.map((definition, index) => <span
+                key={ `definition-${index}` }>{ definition }</span>) }
+            </div>
+          </div>
+        </React.Fragment>
+      )
+    } else {
+      return null
+    }
+  }
 
-  return (
-    <div className={ `Search-Result` }>
+  renderSearchWord() {
+    const { word } = this.props;
+    return word && (
       <div className={ `Search-Word` }>
         <div className={ `title` }>
           <h3>
@@ -25,28 +74,19 @@ export default function SearchResult() {
           { word }
         </div>
       </div>
-      <div className={ `Result-Sections` }>
-        <div className={ `Result-Section` }>
-          <div className={ `title` }>
-            <h3>
-              Webster's Definition
-            </h3>
-          </div>
-          <div className={ `Result` }>
-            { definition }
-          </div>
-        </div>
-        <div className={ `Result-Section` }>
-          <div className={ `title` }>
-            <h3>
-              Webster's Etymologies
-            </h3>
-          </div>
-          <div className={ `Result` }>
-            { etymoloygies.map((etymology, index) => <span key={`etymology-${index}`}>{ etymology }</span>) }
-          </div>
+    )
+  }
+
+  render() {
+    return (
+      <div className={ `Search-Result` }>
+        { this.renderSearchWord() }
+        <div className={ `Result-Sections` }>
+          { this.renderOfficialResults() }
+          { this.renderUrbanDictionaryResults() }
         </div>
       </div>
-    </div>
-  )
+    )
+  }
+
 }

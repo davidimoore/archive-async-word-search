@@ -4,11 +4,8 @@ import { connect } from "react-redux";
 import * as actionCreators from 'actions/dictionarySearch';
 
 export class SearchPageContainer extends Component {
-
-
   render() {
-    const { fetchWord } = this.props;
-    return <SearchPage submitHandler={ fetchWord }/>
+    return <SearchPage {...this.props}/>
   }
 }
 
