@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextForm generates a snapshot 1`] = `
+<div>
+  <form>
+    <input
+      name="words"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <input
+      type="submit"
+      value="Submit"
+    />
+  </form>
+</div>
+`;

@@ -1,0 +1,23 @@
+.TextFormContainer {
+  display: flex;
+  width: 35%;
+}
+
+.TextFormContainer .TextForm {
+  width: 100%;
+}
+
+.TextFormContainer .TextForm .WordTextInput {
+  border: 1px solid cornflowerblue;
+  border-radius: 0;
+  padding: 1em;
+  width: 80%;
+  -webkit-appearance: none;
+}
+
+.TextFormContainer .TextForm .Submit {
+  border: 1px solid cornflowerblue;
+  border-radius: 0;
+  padding: 1em;
+  -webkit-appearance: none;
+}

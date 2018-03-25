@@ -1,0 +1,18 @@
+.Search-Result {
+  display: flex;
+  justify-content: center;
+  width: 100%
+}
+
+.Search-Result .Search-Word {
+  padding: 10px;
+}
+
+.Search-Result .Result-Sections {
+  display: flex;
+}
+
+.Search-Result .Result-Sections .Result-Section {
+  padding: 10px;
+  width: 33%;
+}

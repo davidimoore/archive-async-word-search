@@ -1,0 +1,14 @@
+.SearchPage {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.SearchPage .Section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+
