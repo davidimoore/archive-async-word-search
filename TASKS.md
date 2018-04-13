@@ -1,0 +1,2 @@
+- search history
+- without redux
