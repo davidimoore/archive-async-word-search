@@ -1,24 +1,33 @@
 import * as actionTypes from 'constants/actionTypes/dictionarySearch';
+import * as statuses from 'constants/statuses';
+/*id: null,
+word: null,
+urbanDictionarySearch: {
+  data: {
+    definitions: []
+  },
+  requestStatus: null
+},
+officialDictionarySearch: {
+  data: {
+    etymologies: [],
+    definitions: []
+  },
+  requestStatus: null
+}*/
 
 const initialState = {
-  word: null,
-  urbanDictionarySearch: {
-    data: {
-      definitions: []
-    },
-    requestStatus: null
-  },
-  officialDictionarySearch: {
-    data: {
-      etymologies: [],
-      definitions: []
-    },
-    requestStatus: null
-  }
+  entries: []
 };
 
 function setWord(state, action) {
-  return { ...state, word: action.data }
+  if (state.entries.find(entry => entry.word === action.data.word)) {
+    return
+  }
+  return {
+    ...state,
+    entries: state.entries.concat(action.data)
+  }
 }
 
 function failUrbanDictionarySearch(state, action) {
@@ -40,26 +49,34 @@ function failOfficialDictionarySearch(state, action) {
 }
 
 function receiveOfficialDictionarySearch(state, action) {
-  const results = action.data.response.results[ 0 ];
-  const entries = results.lexicalEntries[ 0 ].entries[ 0 ]
-  const { etymologies } = entries;
-  const { definitions } = entries.senses[ 0 ];
+  const responseResults = action.data.result.response.results[ 0 ];
+  const responseResultsEntries = responseResults.lexicalEntries[ 0 ].entries[ 0 ]
+  const { etymologies } = responseResultsEntries;
+  const { definitions } = responseResultsEntries.senses[ 0 ];
   const data = { etymologies, definitions };
   const officialDictionarySearch = {
     ...state.officialDictionarySearch,
     data,
-    requestStatus: 'RECEIVED'
+    requestStatus: statuses.RECEIVED
   };
 
-  return { ...state, officialDictionarySearch }
+  const entries = state.entries.map(stateEntry => {
+    if (stateEntry.id === action.data.id) {
+      return { ...stateEntry, officialDictionarySearch }
+    } else {
+      return stateEntry
+    }
+  });
+
+  return { ...state, entries }
 }
 
 function receiveUrbanDictionarySearch(state, action) {
   const definitions = [];
-  definitions[0] = action.data.list[0].definition;
+  definitions[ 0 ] = action.data.list[ 0 ].definition;
   const urbanDictionarySearch = {
     ...state.urbanDictionarySearch,
-    data:{
+    data: {
       definitions
     },
     requestStatus: 'RECEIVED'
@@ -68,16 +85,22 @@ function receiveUrbanDictionarySearch(state, action) {
   return { ...state, urbanDictionarySearch }
 }
 
-function requestOfficialDictionarySearch(state) {
-  const officialDictionarySearch = {
-    ...state.officialDictionarySearch,
-    requestStatus: 'REQUESTED'
-  };
+function requestOfficialDictionarySearch(state, action) {
+  const entries = state.entries.map(stateEntry => {
+    if (stateEntry.id === action.data) {
+      const officialDictionarySearch = {
+        requestStatus: statuses.REQUESTED
+      };
+      return { ...stateEntry, officialDictionarySearch }
+    } else {
+      return stateEntry
+    }
+  });
 
-  return { ...state, officialDictionarySearch }
+  return { ...state, entries }
 }
 
-function requestUrbanDictionarySearch(state) {
+function requestUrbanDictionarySearch(state, action) {
   const urbanDictionarySearch = {
     ...state.urbanDictionarySearch,
     requestStatus: 'REQUESTED'
@@ -99,9 +122,9 @@ export default function dictionarySearch(state = initialState, action) {
     case actionTypes.RECEIVE_URBAN_DICTIONARY_SEARCH:
       return receiveUrbanDictionarySearch(state, action);
     case actionTypes.REQUEST_OFFICIAL_DICTIONARY_SEARCH:
-      return requestOfficialDictionarySearch(state);
+      return requestOfficialDictionarySearch(state, action);
     case actionTypes.REQUEST_URBAN_DICTIONARY_SEARCH:
-      return requestUrbanDictionarySearch(state);
+      return requestUrbanDictionarySearch(state, action);
     default:
       return state
 

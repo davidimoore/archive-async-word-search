@@ -1,30 +1,20 @@
 import React, { Component } from 'react';
-import "./SearchResult.css"
+import "./SearchResults.css"
 
 export default class SearchResult extends Component {
-  renderOfficialResults() {
-    const { requestStatus } = this.props.officialDictionarySearch;
+  renderOfficialResults(officialDictionarySearch) {
+    const { requestStatus } = officialDictionarySearch;
     if (requestStatus === 'RECEIVED') {
-      const { definitions, etymologies } = this.props.officialDictionarySearch.data;
+      const { definitions, etymologies } = officialDictionarySearch.data;
       return (
         <React.Fragment>
           <div className={ `Result-Section` }>
-            <div className={ `title` }>
-              <h3>
-                Oxford Definitions
-              </h3>
-            </div>
             <div className={ `Result` }>
               { definitions && definitions.map((definition, index) => <span
                 key={ `definition-${index}` }>{ definition }</span>) }
             </div>
           </div>
           <div className={ `Result-Section` }>
-            <div className={ `title` }>
-              <h3>
-                Oxford Etymologies
-              </h3>
-            </div>
             <div className={ `Result` }>
               { etymologies && etymologies.map((etymology, index) => <span
                 key={ `etymology-${index}` }>{ etymology }</span>) }
@@ -37,18 +27,13 @@ export default class SearchResult extends Component {
     }
   }
 
-  renderUrbanDictionaryResults() {
-    const { requestStatus } = this.props.urbanDictionarySearch;
+  renderUrbanDictionaryResults(entry) {
+    const { requestStatus } = entry.urbanDictionarySearch;
     if (requestStatus === 'RECEIVED') {
-      const { definitions } = this.props.urbanDictionarySearch.data;
+      const { definitions } = entry.urbanDictionarySearch.data;
       return (
         <React.Fragment>
           <div className={ `Result-Section` }>
-            <div className={ `title` }>
-              <h3>
-                Urban Dictionary Definitions
-              </h3>
-            </div>
             <div className={ `Result` }>
               { definitions && definitions.map((definition, index) => <span
                 key={ `definition-${index}` }>{ definition }</span>) }
@@ -61,29 +46,35 @@ export default class SearchResult extends Component {
     }
   }
 
-  renderSearchWord() {
-    const { word } = this.props;
-    return word && (
+  renderSearchWord(word) {
+    return(
       <div className={ `Search-Word` }>
-        <div className={ `title` }>
-          <h3>
-            Word
-          </h3>
-        </div>
-        <div className={ `Search-Word` }>
-          { word }
-        </div>
+        { word }
       </div>
     )
   }
 
   render() {
+    const { entries } = this.props;
     return (
-      <div className={ `Search-Result` }>
-        { this.renderSearchWord() }
+      entries && entries.map(entry => this.renderSearchResult(entry))
+    )
+  }
+
+  renderSearchResult(entry) {
+    const { word, officialDictionarySearch } = entry;
+    return (
+      <div
+        key={ word }
+        className={ `Search-Result` }>
+        { word && this.renderSearchWord(word) }
         <div className={ `Result-Sections` }>
-          { this.renderOfficialResults() }
-          { this.renderUrbanDictionaryResults() }
+          { officialDictionarySearch && this.renderOfficialResults(officialDictionarySearch) }
+          {
+            //this.renderUrbanDictionaryResults()
+          }
+
+
         </div>
       </div>
     )

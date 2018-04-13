@@ -1,24 +1,22 @@
 import React from 'react';
 import TextForm from 'components/TextForm'
-import SearchResult from 'components/SearchResult';
+import SearchResults from 'components/SearchResults';
 import './SearchPage.css';
 
 export default function SearchPage(props) {
-  const { fetchWord } = props;
+  const { fetchWords } = props;
 
   return (
     <div
       className={ `SearchPage` }
     >
-      <div className={ `Section` }>
+      <div className={ `Search-Section` }>
         <TextForm
-          submitHandler={ fetchWord }
+          submitHandler={ fetchWords }
         />
       </div>
-      <div className={ `Section` }>
-        <SearchResult
-          {...props}
-        />
+      <div className={ `Result-Section` }>
+        {  <SearchResults {...props} /> }
       </div>
     </div>
   )

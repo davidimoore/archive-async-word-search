@@ -4,9 +4,16 @@
 
 }
 
-.SearchPage .Section {
+.SearchPage .Search-Section {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.SearchPage .Result-Section {
+  display: flex;
+  flex-direction: column;
   justify-content: space-around;
   margin-top: 15px;
 }
