@@ -1,6 +1,6 @@
 import React from 'react';
 import TextForm from 'components/TextForm'
-import SearchResults from 'components/SearchResults';
+import SearchResults from 'components/SearchResults/SearchResults';
 import './SearchPage.css';
 
 export default function SearchPage(props) {

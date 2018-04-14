@@ -73,16 +73,24 @@ function receiveOfficialDictionarySearch(state, action) {
 
 function receiveUrbanDictionarySearch(state, action) {
   const definitions = [];
-  definitions[ 0 ] = action.data.list[ 0 ].definition;
+  definitions[ 0 ] = action.data.result.list[ 0 ].definition;
   const urbanDictionarySearch = {
     ...state.urbanDictionarySearch,
     data: {
       definitions
     },
-    requestStatus: 'RECEIVED'
+    requestStatus: statuses.RECEIVED
   };
 
-  return { ...state, urbanDictionarySearch }
+  const entries = state.entries.map(stateEntry => {
+    if (stateEntry.id === action.data.id) {
+      return { ...stateEntry, urbanDictionarySearch }
+    } else {
+      return stateEntry
+    }
+  });
+
+  return { ...state, entries }
 }
 
 function requestOfficialDictionarySearch(state, action) {
@@ -101,12 +109,18 @@ function requestOfficialDictionarySearch(state, action) {
 }
 
 function requestUrbanDictionarySearch(state, action) {
-  const urbanDictionarySearch = {
-    ...state.urbanDictionarySearch,
-    requestStatus: 'REQUESTED'
-  };
+  const entries = state.entries.map(stateEntry => {
+    if (stateEntry.id === action.data) {
+      const urbanDictionarySearch = {
+        requestStatus: statuses.REQUESTED
+      };
+      return { ...stateEntry, urbanDictionarySearch }
+    } else {
+      return stateEntry
+    }
+  });
 
-  return { ...state, urbanDictionarySearch }
+  return { ...state, entries }
 }
 
 export default function dictionarySearch(state = initialState, action) {

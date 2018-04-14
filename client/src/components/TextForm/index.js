@@ -12,7 +12,7 @@ export default class TextForm extends Component {
     e.preventDefault();
     const { submitHandler } = this.props;
     const { words } = this.state;
-    submitHandler(words)
+    words && submitHandler(words)
   };
 
   render() {

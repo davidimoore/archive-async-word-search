@@ -1,18 +1,26 @@
-.Search-Result {
-  display: flex;
-  justify-content: center;
-  width: 100%
+.Search-Results {
+  width: 80%;
+  margin: 25px auto 0;
 }
 
-.Search-Result .Search-Word {
+.Search-Result, .Search-Result-Headings {
+  display: flex;
+  width: 100%;
+  padding-top: 15px;
+}
+
+.Search-Result .Search-Word, .Search-Result-Headings .Word-Heading {
+  width: 5%;
   padding: 10px;
 }
 
-.Search-Result .Result-Sections {
+.Search-Result .Result-Sections, .Search-Result-Headings .Result-Sections-Headings {
+  padding: 0 10px;
   display: flex;
+  width: 80%;
 }
 
-.Search-Result .Result-Sections .Result-Section {
+.Search-Result .Result-Sections .Result-Section, .Search-Result-Headings .Result-Sections-Headings .Result-Heading {
   padding: 10px;
   width: 33%;
 }

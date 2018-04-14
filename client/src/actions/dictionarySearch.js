@@ -12,10 +12,11 @@ export function fetchWords(data) {
 function fetchWord(word, index) {
   return dispatch => {
     dispatch(setWord({ id: index, word }));
-    dispatch(requestOfficialDefinition({id: index}));
-    fetchOfficialWord({dispatch, word, id: index});
-    //dispatch(requestUrbanDictionaryDefinition());
-    //fetchUrbanDictionaryDefinition(dispatch, word);
+    dispatch(requestOfficialDefinition({ id: index }));
+    fetchOfficialWord({ dispatch, word, id: index });
+
+    dispatch(requestUrbanDictionaryDefinition({ id: index }));
+    fetchUrbanDictionaryDefinition({ dispatch, word, id: index });
   }
 }
 
@@ -26,32 +27,33 @@ function setWord({ id, word }) {
   }
 }
 
-function fetchOfficialWord({dispatch, word, id}) {
+function fetchOfficialWord({ dispatch, word, id }) {
   return getRequest({ url: `${urls.webstersSearchURL}/${word}` })
     .then(result => {
-      dispatch(receiveOfficialDefinition({result: result.data, id}))
+      dispatch(receiveOfficialDefinition({ result: result.data, id }))
     })
     .catch(error => dispatch(failedOfficialDictionarySearch(error)))
 }
 
-function fetchUrbanDictionaryDefinition(dispatch, word) {
+function fetchUrbanDictionaryDefinition({ dispatch, word, id }) {
   return getRequest({ url: `${urls.urbanDictionarySearchUrl}?term=${word}` })
     .then(result => {
-      dispatch(receiveUrbanDictionaryDefinion(result.data))
+
+      dispatch(receiveUrbanDictionaryDefinion({ result: result.data, id }))
     })
     .catch(error => dispatch(failedUrbanDictionaryDictionarySearch(error)))
 }
 
-function requestOfficialDefinition({id}) {
+function requestOfficialDefinition({ id }) {
   return {
     data: id,
     type: actionTypes.REQUEST_OFFICIAL_DICTIONARY_SEARCH
   }
 }
 
-function receiveOfficialDefinition({result, id}) {
+function receiveOfficialDefinition({ result, id }) {
   return {
-    data:{result, id},
+    data: { result, id },
     type: actionTypes.RECEIVE_OFFICIAL_DICTIONARY_SEARCH
   }
 }
@@ -64,15 +66,16 @@ function failedOfficialDictionarySearch(data) {
   }
 }
 
-function requestUrbanDictionaryDefinition() {
+function requestUrbanDictionaryDefinition({ id }) {
   return {
+    data: id,
     type: actionTypes.REQUEST_URBAN_DICTIONARY_SEARCH
   }
 }
 
-function receiveUrbanDictionaryDefinion(data) {
+function receiveUrbanDictionaryDefinion({ result, id }) {
   return {
-    data,
+    data: { result, id },
     type: actionTypes.RECEIVE_URBAN_DICTIONARY_SEARCH
   }
 }
