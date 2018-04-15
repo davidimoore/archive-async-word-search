@@ -57,37 +57,34 @@ export default class SearchResult extends Component {
   }
 
   render() {
-    const { entries } = this.props;
-    if (entries.length > 0) {
-      return (
-        <div className={ `Search-Results` }>
-          <div className={ `Search-Result-Headings` }>
-            <div className={ `Word-Heading` }>
-              Word
+return(
+  <div className={ `Search-Results` }>
+            <div className={ `Search-Result-Headings` }>
+              <div className={ `Word-Heading` }>
+                Word
+              </div>
+              <div className={ `Result-Sections-Headings` }>
+                <div className={ `Result-Heading` }>
+                  Official Definition
+                </div>
+                <div className={ `Result-Heading` }>
+                  Official Etymology
+                </div>
+                <div className={ `Result-Heading` }>
+                  Urban Dictionary Definition
+                </div>
+              </div>
             </div>
-            <div className={`Result-Sections-Headings`}>
-            <div className={ `Result-Heading` }>
-              Official Definition
-            </div>
-            <div className={ `Result-Heading` }>
-              Official Etymology
-            </div>
-            <div className={ `Result-Heading` }>
-              Urban Dictionary Definition
-            </div>
-            </div>
-          </div>
 
-          { entries.map(entry => this.renderSearchResult(entry)) }
-        </div>
-      )
-    } else {
-      return null
-    }
+            { this.renderSearchResult() }
+          </div>
+  )
+
+
   }
 
-  renderSearchResult(entry) {
-    const { word, officialDictionarySearch, urbanDictionarySearch } = entry;
+  renderSearchResult() {
+    const { word, officialDictionarySearch, urbanDictionarySearch } = this.props;
     return word && word !== "" ?
       (
         <div
@@ -98,7 +95,9 @@ export default class SearchResult extends Component {
 
           <div className={ `Result-Sections` }>
             { officialDictionarySearch ? this.renderOfficialResults(officialDictionarySearch) : null }
-            { urbanDictionarySearch ? this.renderUrbanDictionaryResults(urbanDictionarySearch) : null }
+            {
+              urbanDictionarySearch ? this.renderUrbanDictionaryResults(urbanDictionarySearch) : null
+            }
           </div>
         </div>
       )

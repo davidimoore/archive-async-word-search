@@ -1,33 +1,26 @@
 import * as actionTypes from 'constants/actionTypes/dictionarySearch';
 import * as statuses from 'constants/statuses';
-/*id: null,
-word: null,
-urbanDictionarySearch: {
-  data: {
-    definitions: []
-  },
-  requestStatus: null
-},
-officialDictionarySearch: {
-  data: {
-    etymologies: [],
-    definitions: []
-  },
-  requestStatus: null
-}*/
 
 const initialState = {
-  entries: []
+  word: null,
+  urbanDictionarySearch: {
+    data: {
+      definitions: []
+    },
+    requestStatus: null
+  },
+  officialDictionarySearch: {
+    data: {
+      etymologies: [],
+      definitions: []
+    },
+    requestStatus: null
+  }
 };
 
 function setWord(state, action) {
-  if (state.entries.find(entry => entry.word === action.data.word)) {
-    return
-  }
-  return {
-    ...state,
-    entries: state.entries.concat(action.data)
-  }
+  const { word } = action.data;
+  return { ...state, word }
 }
 
 function failUrbanDictionarySearch(state, action) {
@@ -35,7 +28,7 @@ function failUrbanDictionarySearch(state, action) {
   return {
     ...state.urbanDictionarySearch,
     data,
-    requestStatus: 'FAILED'
+    requestStatus: statuses.FAILED
   }
 }
 
@@ -44,7 +37,7 @@ function failOfficialDictionarySearch(state, action) {
   return {
     ...state.officialDictionarySearch,
     data,
-    requestStatus: 'FAILED'
+    requestStatus: statuses.FAILED
   }
 }
 
@@ -60,15 +53,7 @@ function receiveOfficialDictionarySearch(state, action) {
     requestStatus: statuses.RECEIVED
   };
 
-  const entries = state.entries.map(stateEntry => {
-    if (stateEntry.id === action.data.id) {
-      return { ...stateEntry, officialDictionarySearch }
-    } else {
-      return stateEntry
-    }
-  });
-
-  return { ...state, entries }
+  return { ...state, officialDictionarySearch }
 }
 
 function receiveUrbanDictionarySearch(state, action) {
@@ -82,45 +67,23 @@ function receiveUrbanDictionarySearch(state, action) {
     requestStatus: statuses.RECEIVED
   };
 
-  const entries = state.entries.map(stateEntry => {
-    if (stateEntry.id === action.data.id) {
-      return { ...stateEntry, urbanDictionarySearch }
-    } else {
-      return stateEntry
-    }
-  });
-
-  return { ...state, entries }
+  return { ...state, urbanDictionarySearch }
 }
 
-function requestOfficialDictionarySearch(state, action) {
-  const entries = state.entries.map(stateEntry => {
-    if (stateEntry.id === action.data) {
-      const officialDictionarySearch = {
-        requestStatus: statuses.REQUESTED
-      };
-      return { ...stateEntry, officialDictionarySearch }
-    } else {
-      return stateEntry
-    }
-  });
+function requestOfficialDictionarySearch(state) {
+  const officialDictionarySearch = {
+    requestStatus: statuses.REQUESTED
+  };
 
-  return { ...state, entries }
+  return { ...state, officialDictionarySearch }
 }
 
-function requestUrbanDictionarySearch(state, action) {
-  const entries = state.entries.map(stateEntry => {
-    if (stateEntry.id === action.data) {
-      const urbanDictionarySearch = {
-        requestStatus: statuses.REQUESTED
-      };
-      return { ...stateEntry, urbanDictionarySearch }
-    } else {
-      return stateEntry
-    }
-  });
+function requestUrbanDictionarySearch(state) {
+  const urbanDictionarySearch = {
+    requestStatus: statuses.REQUESTED
+  };
 
-  return { ...state, entries }
+  return { ...state, urbanDictionarySearch }
 }
 
 export default function dictionarySearch(state = initialState, action) {
@@ -136,9 +99,9 @@ export default function dictionarySearch(state = initialState, action) {
     case actionTypes.RECEIVE_URBAN_DICTIONARY_SEARCH:
       return receiveUrbanDictionarySearch(state, action);
     case actionTypes.REQUEST_OFFICIAL_DICTIONARY_SEARCH:
-      return requestOfficialDictionarySearch(state, action);
+      return requestOfficialDictionarySearch(state);
     case actionTypes.REQUEST_URBAN_DICTIONARY_SEARCH:
-      return requestUrbanDictionarySearch(state, action);
+      return requestUrbanDictionarySearch(state);
     default:
       return state
 

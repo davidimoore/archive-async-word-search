@@ -2,58 +2,50 @@ import { getRequest } from 'api/request';
 import * as actionTypes from 'constants/actionTypes/dictionarySearch';
 import * as urls from 'constants/urls'
 
-export function fetchWords(data) {
-  const words = data.split(",");
+export function fetchWord(word) {
   return dispatch => {
-    words.map((word, index) => dispatch(fetchWord(word, index)))
+    dispatch(setWord({ word }));
+    dispatch(requestOfficialDefinition());
+    fetchOfficialWord({ dispatch, word });
+
+    dispatch(requestUrbanDictionaryDefinition());
+    fetchUrbanDictionaryDefinition({ dispatch, word });
   }
 }
 
-function fetchWord(word, index) {
-  return dispatch => {
-    dispatch(setWord({ id: index, word }));
-    dispatch(requestOfficialDefinition({ id: index }));
-    fetchOfficialWord({ dispatch, word, id: index });
-
-    dispatch(requestUrbanDictionaryDefinition({ id: index }));
-    fetchUrbanDictionaryDefinition({ dispatch, word, id: index });
-  }
-}
-
-function setWord({ id, word }) {
+function setWord({ word }) {
   return {
-    data: { id, word },
+    data: { word },
     type: actionTypes.SET_WORD
   }
 }
 
-function fetchOfficialWord({ dispatch, word, id }) {
+function fetchOfficialWord({ dispatch, word }) {
   return getRequest({ url: `${urls.webstersSearchURL}/${word}` })
     .then(result => {
-      dispatch(receiveOfficialDefinition({ result: result.data, id }))
+      dispatch(receiveOfficialDefinition({ result: result.data }))
     })
     .catch(error => dispatch(failedOfficialDictionarySearch(error)))
 }
 
-function fetchUrbanDictionaryDefinition({ dispatch, word, id }) {
+function fetchUrbanDictionaryDefinition({ dispatch, word}) {
   return getRequest({ url: `${urls.urbanDictionarySearchUrl}?term=${word}` })
     .then(result => {
 
-      dispatch(receiveUrbanDictionaryDefinion({ result: result.data, id }))
+      dispatch(receiveUrbanDictionaryDefinion({ result: result.data }))
     })
     .catch(error => dispatch(failedUrbanDictionaryDictionarySearch(error)))
 }
 
-function requestOfficialDefinition({ id }) {
+function requestOfficialDefinition() {
   return {
-    data: id,
     type: actionTypes.REQUEST_OFFICIAL_DICTIONARY_SEARCH
   }
 }
 
-function receiveOfficialDefinition({ result, id }) {
+function receiveOfficialDefinition({ result}) {
   return {
-    data: { result, id },
+    data: { result},
     type: actionTypes.RECEIVE_OFFICIAL_DICTIONARY_SEARCH
   }
 }
@@ -66,16 +58,15 @@ function failedOfficialDictionarySearch(data) {
   }
 }
 
-function requestUrbanDictionaryDefinition({ id }) {
+function requestUrbanDictionaryDefinition() {
   return {
-    data: id,
     type: actionTypes.REQUEST_URBAN_DICTIONARY_SEARCH
   }
 }
 
-function receiveUrbanDictionaryDefinion({ result, id }) {
+function receiveUrbanDictionaryDefinion({ result}) {
   return {
-    data: { result, id },
+    data: { result },
     type: actionTypes.RECEIVE_URBAN_DICTIONARY_SEARCH
   }
 }

@@ -4,7 +4,7 @@ import SearchResults from 'components/SearchResults/SearchResults';
 import './SearchPage.css';
 
 export default function SearchPage(props) {
-  const { fetchWords } = props;
+  const { fetchWord } = props;
 
   return (
     <div
@@ -12,7 +12,7 @@ export default function SearchPage(props) {
     >
       <div className={ `Search-Section` }>
         <TextForm
-          submitHandler={ fetchWords }
+          submitHandler={ fetchWord }
         />
       </div>
       <div className={ `Result-Section` }>
