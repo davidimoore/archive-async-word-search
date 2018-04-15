@@ -73,7 +73,7 @@ export default class SearchResult extends Component {
               Official Etymology
             </div>
             <div className={ `Result-Heading` }>
-              Urban Dictionary Heading
+              Urban Dictionary Definition
             </div>
             </div>
           </div>
