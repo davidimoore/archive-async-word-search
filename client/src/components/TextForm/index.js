@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import './TextForm.css';
 
 export default class TextForm extends Component {
-  state = { words: "" };
+  state = { word: "" };
 
   handleChange = (event) => {
-    this.setState({ words: event.target.value })
+    this.setState({ word: event.target.value })
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
     const { submitHandler } = this.props;
-    const { words } = this.state;
-    submitHandler(words)
+    const { word } = this.state;
+    submitHandler(word)
   };
 
   render() {
@@ -27,7 +27,7 @@ export default class TextForm extends Component {
             className={ `WordTextInput` }
             type="text"
             name="words"
-            value={ this.state.words }
+            value={ this.state.word }
             onChange={ this.handleChange }
           />
 
