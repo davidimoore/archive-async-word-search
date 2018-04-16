@@ -6,14 +6,13 @@
     "node": "8.9.x",
     "yarn": "1.6.0"
   },
-  "main": "index.js",
   "author": "David Moore",
   "license": "MIT",
   "scripts": {
     "client": "cd client && yarn start",
-    "heroku-postbuild": "cd client/ && yarn install && yarn install && npm run build",
+    "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "server": "nodemon server.js",
-    "start": "node index.js",
+    "start": "node server",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "cacheDirectories": [
