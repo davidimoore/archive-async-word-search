@@ -2,7 +2,8 @@
   "name": "homepage-server",
   "version": "1.0.0",
   "engines": {
-    "node": "8.9.x"
+    "node": "8.9.x",
+    "yarn": "1.6.0"
   },
   "main": "index.js",
   "author": "David Moore",
@@ -11,7 +12,7 @@
     "client": "cd client && yarn start",
     "heroku-postbuild": "cd client/ && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
     "server": "nodemon server.js",
-    "start": "node server",
+    "start": "node index.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "cacheDirectories": [
