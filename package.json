@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "client": "cd client && yarn start",
-    "heroku-postbuild": "cd client/ && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
+    "heroku-postbuild": "cd client/ && yarn install && yarn install && npm run build",
     "server": "nodemon server.js",
     "start": "node index.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""

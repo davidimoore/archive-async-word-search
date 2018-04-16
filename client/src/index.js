@@ -15,6 +15,7 @@ let store = createStore(
     thunk
   )
 );
+console.log("PORT", process.env.PORT)
 
 ReactDOM.render(
   <Provider store={store}>
