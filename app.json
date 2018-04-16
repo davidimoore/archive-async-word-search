@@ -1,0 +1,22 @@
+
+{
+  "name": "awesome-word-search",
+  "description": "web app made of create-react-app and a Node API",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

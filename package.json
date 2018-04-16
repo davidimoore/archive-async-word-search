@@ -1,14 +1,23 @@
 {
   "name": "homepage-server",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.9.x"
+  },
   "main": "index.js",
   "author": "David Moore",
   "license": "MIT",
   "scripts": {
     "client": "cd client && yarn start",
+    "heroku-postbuild": "cd client/ && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
     "server": "nodemon server.js",
+    "start": "node server",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
   "dependencies": {
     "cors": "^2.8.4",
     "express": "^4.16.3",
@@ -18,5 +27,9 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidimoore/async-word-search.git"
   }
 }
