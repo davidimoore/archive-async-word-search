@@ -3,7 +3,7 @@ const cors = require('cors');
 const requests = require('./requests');
 const app = express();
 const port = process.env.PORT || 5000;
-
+console.log("PORT", process.env.PORT)
 app.use(cors());
 app.get("/hello", (req, res) => {
     res.send({ hello: "world" })
