@@ -6,10 +6,11 @@ export function fetchWord(word) {
   return dispatch => {
     dispatch(setWord({ word }));
     dispatch(requestOfficialDefinition());
-    fetchOfficialWord({ dispatch, word });
-
     dispatch(requestUrbanDictionaryDefinition());
+    dispatch(requestThesaurusTermsSearch());
+    fetchOfficialWord({ dispatch, word });
     fetchUrbanDictionaryDefinition({ dispatch, word });
+    fetchThesaurusTermsSearch({ dispatch, word })
   }
 }
 
@@ -28,7 +29,15 @@ function fetchOfficialWord({ dispatch, word }) {
     .catch(error => dispatch(failedOfficialDictionarySearch(error)))
 }
 
-function fetchUrbanDictionaryDefinition({ dispatch, word}) {
+function fetchThesaurusTermsSearch({ dispatch, word }) {
+  return getRequest({ url: `${urls.thesaurusSearchUrl}/${word}/json` })
+    .then(result => {
+      dispatch(receiveThesaurusTermsSearch({ result: result.data }))
+    })
+    .catch(error => dispatch(failedUrbanDictionaryDictionarySearch(error)))
+}
+
+function fetchUrbanDictionaryDefinition({ dispatch, word }) {
   return getRequest({ url: `${urls.urbanDictionarySearchUrl}?term=${word}` })
     .then(result => {
 
@@ -37,15 +46,28 @@ function fetchUrbanDictionaryDefinition({ dispatch, word}) {
     .catch(error => dispatch(failedUrbanDictionaryDictionarySearch(error)))
 }
 
+function requestThesaurusTermsSearch() {
+  return {
+    type: actionTypes.REQUEST_THESAURUS_TERMS_SEARCH
+  }
+}
+
+function receiveThesaurusTermsSearch({ result }) {
+  return {
+    data: { result },
+    type: actionTypes.RECEIVE_THESAURUS_TERMS_SEARCH
+  }
+}
+
 function requestOfficialDefinition() {
   return {
     type: actionTypes.REQUEST_OFFICIAL_DICTIONARY_SEARCH
   }
 }
 
-function receiveOfficialDefinition({ result}) {
+function receiveOfficialDefinition({ result }) {
   return {
-    data: { result},
+    data: { result },
     type: actionTypes.RECEIVE_OFFICIAL_DICTIONARY_SEARCH
   }
 }
@@ -64,7 +86,7 @@ function requestUrbanDictionaryDefinition() {
   }
 }
 
-function receiveUrbanDictionaryDefinion({ result}) {
+function receiveUrbanDictionaryDefinion({ result }) {
   return {
     data: { result },
     type: actionTypes.RECEIVE_URBAN_DICTIONARY_SEARCH

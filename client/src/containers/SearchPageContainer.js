@@ -5,8 +5,7 @@ import * as actionCreators from 'actions/dictionarySearch';
 
 export class SearchPageContainer extends Component {
   render() {
-    console.log(this.props)
-    return <SearchPage {...this.props}/>
+    return <SearchPage { ...this.props }/>
   }
 }
 

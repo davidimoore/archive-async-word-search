@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import "./SearchResults.css"
 import * as statuses from 'constants/statuses';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
+import OfficialDictionaryResults from "components/OfficialDictionaryResults/OfficialDictionaryResults";
+import UrbanDictionaryResults from "components/UrbanDictionaryResults/UrbanDictionaryResults";
+import ThesaurusResults from "components/ThesaurusResults/ThesaurusResults";
 
 export default class SearchResult extends Component {
   conditionalRender = ({ status, result }) => {
@@ -15,66 +18,37 @@ export default class SearchResult extends Component {
     }
   }
 
-  renderOfficialResults() {
-    const { officialDictionarySearch } = this.props;
-    const { data, requestStatus } = officialDictionarySearch;
-    const { definitions, etymologies } = data;
-    return (
-      <React.Fragment>
-        <div className={ `Result-Section` }>
-          <div className={ `Result` }>
-            { this.conditionalRender({
-              status: requestStatus,
-              result: (definitions ?
-                definitions.map((definition, index) => <span
-                  key={ `definition-${index}` }>
-                  { definition }</span>)
-                  :
-                  null
-              )
-            }) }
-          </div>
-        </div>
-        <div className={ `Result-Section` }>
-          <div className={ `Result` }>
-            { this.conditionalRender({
-              status: requestStatus,
-              result: etymologies ?
-                etymologies.map((etymology, index) => <span
-                  key={ `etymology-${index}` }>{ etymology }</span>) : null
-            }) }
-          </div>
-        </div>
-      </React.Fragment>
-    )
-  }
+  renderSearchResults = () =>{
+    const { word, officialDictionarySearch, urbanDictionarySearch, thesaurusTermsSearch } = this.props;
+    const resultsSet = [
+      { result: officialDictionarySearch, Component: OfficialDictionaryResults },
+      { result: urbanDictionarySearch, Component: UrbanDictionaryResults },
+      { result: thesaurusTermsSearch, Component: ThesaurusResults },
+    ];
 
-  renderUrbanDictionaryResults(urbanDictionarySearch) {
-    const { requestStatus } = urbanDictionarySearch;
-    if (requestStatus === 'RECEIVED') {
-      const { definitions } = urbanDictionarySearch.data;
-      return (
-        <React.Fragment>
-          <div className={ `Result-Section` }>
-            <div className={ `Result` }>
-              { definitions && definitions.map((definition, index) => <span
-                key={ `definition-${index}` }>{ definition }</span>) }
-            </div>
+    return word && word !== "" ?
+      (
+        <div
+          key={ word }
+          className={ `Search-Result` }
+        >
+          <div className={ `Search-Word` }>
+            { word }
           </div>
-        </React.Fragment>
+
+          <div className={ `Result-Sections` }>
+            { resultsSet.map((resultSet, index) => {
+              const { result, Component } = resultSet;
+              return result ? <Component { ...result } key={`${index}`} conditionalRender={ this.conditionalRender }/> : null
+            })
+            }
+          </div>
+        </div>
       )
-    } else {
-      return null
-    }
+      :
+      null
   }
 
-  renderSearchWord(word) {
-    return (
-      <div className={ `Search-Word` }>
-        { word || " " }
-      </div>
-    )
-  }
 
   render() {
     return (
@@ -93,34 +67,15 @@ export default class SearchResult extends Component {
             <div className={ `Result-Heading` }>
               Urban Dictionary Definition
             </div>
+            <div className={ `Result-Heading` }>
+              Thesaurus
+            </div>
           </div>
         </div>
 
-        { this.renderSearchResult() }
+        { this.renderSearchResults() }
       </div>
     )
-  }
-
-  renderSearchResult() {
-    const { word, officialDictionarySearch, urbanDictionarySearch } = this.props;
-    return word && word !== "" ?
-      (
-        <div
-          key={ word }
-          className={ `Search-Result` }
-        >
-          { word && this.renderSearchWord(word) }
-
-          <div className={ `Result-Sections` }>
-            { officialDictionarySearch ? this.renderOfficialResults(officialDictionarySearch) : null }
-            {
-              urbanDictionarySearch ? this.renderUrbanDictionaryResults(urbanDictionarySearch) : null
-            }
-          </div>
-        </div>
-      )
-      :
-      null
   }
 
 }
