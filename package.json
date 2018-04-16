@@ -1,5 +1,6 @@
 {
   "name": "homepage-server",
+  "description": "app that fetches definitions and various items related to a search word",
   "version": "1.0.0",
   "engines": {
     "node": "8.9.x",
