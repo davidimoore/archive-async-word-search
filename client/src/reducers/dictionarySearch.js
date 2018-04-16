@@ -5,14 +5,14 @@ const initialState = {
   word: null,
   urbanDictionarySearch: {
     data: {
-      definitions: []
+      definitions: null
     },
     requestStatus: null
   },
   officialDictionarySearch: {
     data: {
-      etymologies: [],
-      definitions: []
+      etymologies: null,
+      definitions: null
     },
     requestStatus: null
   }
@@ -46,10 +46,10 @@ function receiveOfficialDictionarySearch(state, action) {
   const responseResultsEntries = responseResults.lexicalEntries[ 0 ].entries[ 0 ]
   const { etymologies } = responseResultsEntries;
   const { definitions } = responseResultsEntries.senses[ 0 ];
-  const data = { etymologies, definitions };
+
   const officialDictionarySearch = {
     ...state.officialDictionarySearch,
-    data,
+    data: { etymologies, definitions },
     requestStatus: statuses.RECEIVED
   };
 
@@ -72,6 +72,7 @@ function receiveUrbanDictionarySearch(state, action) {
 
 function requestOfficialDictionarySearch(state) {
   const officialDictionarySearch = {
+    ...state.officialDictionarySearch,
     requestStatus: statuses.REQUESTED
   };
 

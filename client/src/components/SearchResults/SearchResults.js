@@ -1,32 +1,52 @@
 import React, { Component } from 'react';
 import "./SearchResults.css"
+import * as statuses from 'constants/statuses';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
 
 export default class SearchResult extends Component {
-  renderOfficialResults(officialDictionarySearch) {
-    const { requestStatus } = officialDictionarySearch;
-    if (requestStatus === 'RECEIVED') {
-      const { data } = officialDictionarySearch;
-
-      const { definitions, etymologies } = data;
-      return (
-        <React.Fragment>
-          <div className={ `Result-Section` }>
-            <div className={ `Result` }>
-              { definitions ? definitions.map((definition, index) => <span
-                key={ `definition-${index}` }>{ definition }</span>) : null }
-            </div>
-          </div>
-          <div className={ `Result-Section` }>
-            <div className={ `Result` }>
-              { etymologies ? etymologies.map((etymology, index) => <span
-                key={ `etymology-${index}` }>{ etymology }</span>) : null }
-            </div>
-          </div>
-        </React.Fragment>
-      )
-    } else {
-      return null
+  conditionalRender = ({ status, result }) => {
+    switch (status) {
+      case(statuses.REQUESTED):
+        return <LoadingSpinner/>;
+      case(statuses.RECEIVED):
+        return result;
+      default:
+        return null
     }
+  }
+
+  renderOfficialResults() {
+    const { officialDictionarySearch } = this.props;
+    const { data, requestStatus } = officialDictionarySearch;
+    const { definitions, etymologies } = data;
+    return (
+      <React.Fragment>
+        <div className={ `Result-Section` }>
+          <div className={ `Result` }>
+            { this.conditionalRender({
+              status: requestStatus,
+              result: (definitions ?
+                definitions.map((definition, index) => <span
+                  key={ `definition-${index}` }>
+                  { definition }</span>)
+                  :
+                  null
+              )
+            }) }
+          </div>
+        </div>
+        <div className={ `Result-Section` }>
+          <div className={ `Result` }>
+            { this.conditionalRender({
+              status: requestStatus,
+              result: etymologies ?
+                etymologies.map((etymology, index) => <span
+                  key={ `etymology-${index}` }>{ etymology }</span>) : null
+            }) }
+          </div>
+        </div>
+      </React.Fragment>
+    )
   }
 
   renderUrbanDictionaryResults(urbanDictionarySearch) {
@@ -51,36 +71,34 @@ export default class SearchResult extends Component {
   renderSearchWord(word) {
     return (
       <div className={ `Search-Word` }>
-        { word || null }
+        { word || " " }
       </div>
     )
   }
 
   render() {
-return(
-  <div className={ `Search-Results` }>
-            <div className={ `Search-Result-Headings` }>
-              <div className={ `Word-Heading` }>
-                Word
-              </div>
-              <div className={ `Result-Sections-Headings` }>
-                <div className={ `Result-Heading` }>
-                  Official Definition
-                </div>
-                <div className={ `Result-Heading` }>
-                  Official Etymology
-                </div>
-                <div className={ `Result-Heading` }>
-                  Urban Dictionary Definition
-                </div>
-              </div>
-            </div>
-
-            { this.renderSearchResult() }
+    return (
+      <div className={ `Search-Results` }>
+        <div className={ `Search-Result-Headings` }>
+          <div className={ `Word-Heading` }>
+            Word
           </div>
-  )
+          <div className={ `Result-Sections-Headings` }>
+            <div className={ `Result-Heading` }>
+              Official Definition
+            </div>
+            <div className={ `Result-Heading` }>
+              Official Etymology
+            </div>
+            <div className={ `Result-Heading` }>
+              Urban Dictionary Definition
+            </div>
+          </div>
+        </div>
 
-
+        { this.renderSearchResult() }
+      </div>
+    )
   }
 
   renderSearchResult() {
