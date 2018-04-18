@@ -115,12 +115,10 @@ function requestThesaurusTermsSearch(state) {
 function getWordTypeExamples(wordTypeExamples) {
   if (wordTypeExamples && wordTypeExamples.length > 0) {
     return wordTypeExamples.reduce((all, word, index) => {
-      if (index === 0) {
-        all = `${word}`
-      } else if (index === wordTypeExamples.length - 1) {
-        all = `${all} ${word}`
+      if (index === wordTypeExamples.length - 1) {
+        all = `${all} ${word}`;
       } else {
-        all = `${all}, ${word},`
+        all = `${all} ${word},`;
       }
       return all
     }, "");
@@ -151,7 +149,7 @@ function receiveThesaurusTermsSearch(state, action) {
       return wordTypeObj;
     });
 
-    return { ...state, thesaurusTermsSearch: { ...thesaurusTermsSearch, data: {terms} } }
+    return { ...state, thesaurusTermsSearch: { ...thesaurusTermsSearch, data: { terms } } }
   } else {
     return { ...state, thesaurusTermsSearch }
   }
