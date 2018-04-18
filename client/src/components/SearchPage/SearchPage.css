@@ -14,7 +14,6 @@
 .SearchPage .Result-Section {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
 }
 
 
