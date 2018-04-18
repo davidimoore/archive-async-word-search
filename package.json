@@ -3,7 +3,7 @@
   "description": "app that fetches definitions and various items related to a search word",
   "version": "1.0.0",
   "engines": {
-    "node": "8.9.x",
+    "node": "8.11.x",
     "yarn": "1.6.0"
   },
   "author": "David Moore",
@@ -27,7 +27,8 @@
     "request-promise": "^4.2.2"
   },
   "devDependencies": {
-    "concurrently": "^3.5.1"
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.3"
   },
   "repository": {
     "type": "git",
