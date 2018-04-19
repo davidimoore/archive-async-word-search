@@ -10,7 +10,7 @@ export class SearchPageContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  return state.dictionarySearch;
+  return state
 }
 
 export default connect(mapStateToProps, actionCreators)(SearchPageContainer);

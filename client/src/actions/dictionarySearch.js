@@ -34,7 +34,7 @@ function fetchThesaurusTermsSearch({ dispatch, word }) {
     .then(result => {
       dispatch(receiveThesaurusTermsSearch({ result: result.data }))
     })
-    .catch(error => dispatch(failedUrbanDictionaryDictionarySearch(error)))
+    .catch(error => dispatch(failedThesaurusTermsSearch(error)))
 }
 
 function fetchUrbanDictionaryDefinition({ dispatch, word }) {
@@ -97,6 +97,14 @@ function failedUrbanDictionaryDictionarySearch(data) {
   return {
     data,
     type: actionTypes.FAILED_URBAN_DICTIONARY_SEARCH
+
+  }
+}
+
+function failedThesaurusTermsSearch(data) {
+  return {
+    data,
+    type: actionTypes.FAILED_THESAURUS_TERMS_SEARCH
 
   }
 }
