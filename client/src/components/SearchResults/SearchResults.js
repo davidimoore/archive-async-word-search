@@ -8,6 +8,7 @@ import ThesaurusResults from "components/ThesaurusResults/ThesaurusResults";
 
 export default class SearchResult extends Component {
   conditionalRender = ({ status, result }) => {
+
     switch (status) {
       case(statuses.REQUESTED):
         return <LoadingSpinner/>;
@@ -18,8 +19,11 @@ export default class SearchResult extends Component {
     }
   }
 
-  renderSearchResults = () =>{
-    const { word, officialDictionarySearch, urbanDictionarySearch, thesaurusTermsSearch } = this.props;
+  renderSearchResults = () => {
+    const {
+      searchWord, officialDictionarySearch, urbanDictionarySearch, thesaurusTermsSearch
+    } = this.props;
+    const { word } = searchWord;
     const resultsSet = [
       { result: officialDictionarySearch, Component: OfficialDictionaryResults },
       { result: urbanDictionarySearch, Component: UrbanDictionaryResults },
@@ -39,7 +43,7 @@ export default class SearchResult extends Component {
           <div className={ `Result-Sections` }>
             { resultsSet.map((resultSet, index) => {
               const { result, Component } = resultSet;
-              return result ? <Component { ...result } key={`${index}`} conditionalRender={ this.conditionalRender }/> : null
+              return <Component { ...result } key={ `${index}` } conditionalRender={ this.conditionalRender }/>
             })
             }
           </div>

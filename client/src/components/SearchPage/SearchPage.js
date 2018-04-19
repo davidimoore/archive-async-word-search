@@ -5,7 +5,6 @@ import './SearchPage.css';
 
 export default function SearchPage(props) {
   const { fetchWord } = props;
-
   return (
     <div
       className={ `SearchPage` }
